@@ -1,0 +1,17 @@
+# Claude Code local config
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+*.swp
+
+# Temporary files
+*.tmp
+*.bak
+
+# KI Results werden versioniert, aber keine accidentellen Duplikate
+*.orig
