@@ -1,7 +1,7 @@
 # Bachelor Thesis – AI-based Software Inspection (RB-UBR)
 
 **Author:** Maik Bender  
-**Supervisor:** Kai Petersen (Blekinge Institute of Technology)
+**Supervisor:** Kai Petersen
 
 ---
 
