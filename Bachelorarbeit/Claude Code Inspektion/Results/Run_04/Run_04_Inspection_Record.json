@@ -1,0 +1,232 @@
+{
+  "run_id": "Run_04",
+  "model": "claude-sonnet-4-6",
+  "prompt_config": "baseline_v1",
+  "timestamp": "2026-04-19T00:00:00Z",
+  "inspection_minutes": "<extern gemessen>",
+  "faults": [
+    {
+      "fault_number": 1,
+      "use_case": "1.1 Taxi: Submit order",
+      "location": "Abschnitt 3.4.1 (Signals from Central to Taxi)",
+      "description": "Section 3.4.1 definiert kein Rejection- oder Failure-Signal für den Fall, dass kein verfügbares Fahrzeug für die Bestellung existiert. Confirm(integer, integer) deckt nur den Erfolgsfall ab. Req 3.1.24 fordert explizit Benachrichtigung bei Misserfolg; Req 3.1.23 setzt eine Ablehnung voraus.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.23, 3.1.24"
+    },
+    {
+      "fault_number": 2,
+      "use_case": "1.2 Central: Submit order",
+      "location": "Abschnitt 3.3.2 (Signals from Central to Operator)",
+      "description": "Kein Signal in der Central-Operator API übermittelt eine Zeitschätzung, wie lange es dauert, bis ein Fahrzeug verfügbar ist. ZoneInfo liefert nur Anzahl von Fahrzeugen und Aufträgen, aber keine ETA. Req 3.2.16 ist explizit; UC 1.2 Variant 3b setzt dieses Feedback voraus.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.2.16"
+    },
+    {
+      "fault_number": 3,
+      "use_case": "1.2 Central: Submit order",
+      "location": "Abschnitt 3.3.1 und 3.3.2 (Central-Operator API)",
+      "description": "Keine Signale für den Operator zum Abrufen von Fahrzeug- oder Fahrereigenschaften in der Central-Operator API. Req 3.1.45–3.1.48 fordern, dass der Operator Eigenschaften einzelner Fahrzeuge, einzelner Fahrer sowie ganzer Gruppen einsehen kann; kein Request- oder Response-Signal ist definiert.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.1.45, 3.1.46, 3.1.47, 3.1.48"
+    },
+    {
+      "fault_number": 4,
+      "use_case": "1.4 Taxi: Log in",
+      "location": "Abschnitt 3.4.2 (LoggedIn Signal)",
+      "description": "LoggedIn(integer) überträgt nur die Taxi-Nummer als einzigen Parameter. Req 3.1.3 fordert Bestätigung durch Taxi-Nummer UND Fahrer-Nummer; Req 3.1.6 fordert Übermittlung der Positionsinformation beim Login. Beide Informationen fehlen im Signal vollständig.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.3, 3.1.6"
+    },
+    {
+      "fault_number": 5,
+      "use_case": "1.4 Taxi: Log in",
+      "location": "Abschnitt 3.4.1 (Signals from Central to Taxi)",
+      "description": "Section 3.4.1 listet LoginOk(integer), aber kein LoginFailed-Signal. Bei ungültiger Karte (UC 1.4 Variant 4b) kann die Zentrale dem Taxi-Modul keine Ablehnung übermitteln. LoginFailed(integer) existiert nur in Section 3.2.2 (Taxi→Driver), nicht auf der Central→Taxi-Schnittstelle. Req 3.1.5 fordert Benachrichtigung bei Misserfolg.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.5"
+    },
+    {
+      "fault_number": 6,
+      "use_case": "1.4 Taxi: Log in",
+      "location": "Abschnitt 3.4.1 (Signals from Central to Taxi), Signaldefinitionen insgesamt",
+      "description": "Das Design definiert keinen Auslöser, der die Zentrale nach einem erfolgreichen Login automatisch dazu veranlasst, Überblicksinformationen aller Zonen an das Taxi zu senden (UC 1.4 Task 6). ZoneInfo existiert als Signal, aber kein Mechanismus verbindet das Login-Ereignis mit einer proaktiven ZoneInfo-Übertragung. Req 3.2.33 ist explizit.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.2.33"
+    },
+    {
+      "fault_number": 7,
+      "use_case": "1.4 Taxi: Log in",
+      "location": "Abschnitt 3.2.1 (Signals from Driver to Taxi)",
+      "description": "In Section 3.2.1 ist kein Logout-Signal vom Fahrer zum Taxi-Modul definiert. LoginSignal hat kein Gegenstück. Der Fahrer hat keine Möglichkeit, über die definierte API einen Logout auszulösen. Req 3.1.8 fordert Logout-Fähigkeit; Req 3.1.10 fordert Benachrichtigung über Erfolg/Misserfolg des Logouts.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.1.8, 3.1.9, 3.1.10"
+    },
+    {
+      "fault_number": 8,
+      "use_case": "1.5 Taxi: Receive order",
+      "location": "MSC 4.1 (Order handling, normal case)",
+      "description": "MSC 4.1 enthält nach Ack(Taxi_Nbr, Order_Nbr) (Schritte 7–8) kein Confirm-Signal von Central zum Taxi. Stattdessen folgt direkt Meter_On (Schritt 9). UC 1.5 Task 4 und UC 1.10 Task 4 fordern explizit, dass die Zentrale die Annahme an das Fahrzeug bestätigt. Das Signal Confirm(integer, integer) ist in Section 3.4.1 definiert, fehlt aber im MSC.",
+      "fault_class": "A",
+      "fault_type": "W",
+      "requirement_reference": ""
+    },
+    {
+      "fault_number": 9,
+      "use_case": "1.5 Taxi: Receive order",
+      "location": "Abschnitt 3.4.2 (Signals from Taxi to Central)",
+      "description": "Kein Signal für den Zustandsübergang zu 'Waiting for Customer' nach Auftragsannahme. Req 3.1.12 fordert, dass die Zentrale bei jedem Zustandswechsel des Taxis informiert wird. Das Ack-Signal zeigt Auftragsannahme an, nicht explizit den Zustandswechsel. Im Gegensatz zu 'Driving' (Not_Avail) und 'Soon Available' fehlt ein Signal für 'Waiting for Customer'.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.1.12"
+    },
+    {
+      "fault_number": 10,
+      "use_case": "1.6 Taxi: Driving a customer",
+      "location": "Abschnitt 3.4.2 (Signals from Taxi to Central)",
+      "description": "Kein dediziertes Signal für den Zustand 'Soon Available' vorhanden, das Zone UND Ankunftszeit überträgt. Not_Avail(integer) hat nur die Taxi-Nummer und repräsentiert 'Driving/Not Available'. Position(integer, integer) überträgt Zone aber keine Zeit. Req 3.1.11 fordert explizit Zeit UND Zone; Req 3.1.13 setzt diese Information für die Schätzung voraus.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.11, 3.1.13"
+    },
+    {
+      "fault_number": 11,
+      "use_case": "1.7 Central: Handle incoming alarms",
+      "location": "Abschnitt 3.2.1 (Signals from Driver to Taxi, Signal Reset_Alarm)",
+      "description": "Reset_Alarm(integer) ist in Section 3.2.1 als Signal VOM FAHRER zum Taxi-Modul definiert; die Beschreibung besagt: 'The alarm for the taxi, identified by the parameter in the signal, is reset.' Der Fahrer kann damit den Alarm zurücksetzen. Dies ist ein direkter Widerspruch zu Req 3.1.21: 'It shall not be possible for the driver to reset the alarm.' Nur der Operator darf zurücksetzen (Req 3.2.10).",
+      "fault_class": "A",
+      "fault_type": "W",
+      "requirement_reference": "3.1.21"
+    },
+    {
+      "fault_number": 12,
+      "use_case": "1.8 Taxi: Alarm event",
+      "location": "Abschnitt 3.4.2 (Signals from Taxi to Central)",
+      "description": "Kein Alarm-Auslösesignal in Section 3.4.2. Req 3.1.17 fordert sofortige Benachrichtigung der Zentrale bei Alarmauslösung; Req 3.2.7 spiegelt diese Anforderung zentral wider. Ohne ein dediziertes Alarm-Signal kann die Zentrale einen Alarmzustand nicht von einem regulären Sprachanruf unterscheiden. Req 3.1.20 verlangt zudem, dass der Alarm auch ohne Login funktioniert.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.17, 3.1.20, 3.2.7"
+    },
+    {
+      "fault_number": 13,
+      "use_case": "1.8 Taxi: Alarm event",
+      "location": "Abschnitt 3.4.2 (Position Signal) und Abschnitt 3.6 Tabelle 1",
+      "description": "Position(integer, integer) überträgt nur Taxi-Nummer und Zonen-Nummer. Für Alarmzustand (Req 3.1.19, 3.2.9) und Meter-Modus (Req 3.4.3, 3.4.4) sind exakte GPS-Koordinaten alle 30 Sekunden gefordert. In Tabelle 1 zeigt Position (Typ 10) nur ein Data-Feld (Zone). Das Signal ist strukturell unzureichend; exakte Koordinaten erfordern mindestens zwei Ganzzahlen (Breite/Länge) oder einen anderen Typ.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "requirement_reference": "3.1.19, 3.2.9, 3.4.3, 3.4.4"
+    },
+    {
+      "fault_number": 14,
+      "use_case": "1.9 Taxi: View traffic overview",
+      "location": "Abschnitt 3.4.1 (Signals from Central to Taxi) und Abschnitt 3.6 Tabelle 1",
+      "description": "ZoneInfo ist in Tabelle 1 (Typ 16, 3 Data-Felder) als über den Radio-Link übertragenes Signal gelistet, erscheint aber nicht in Section 3.4.1 (Central→Taxi-Schnittstelle). Die Schnittstellendefinition ist inkonsistent mit der Protokolldefinition. Ohne ZoneInfo in 3.4.1 ist die Übertragung von Zonenübersichten an das Taxi nicht formal spezifiziert.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "requirement_reference": "3.1.40, 3.1.41, 3.1.42"
+    },
+    {
+      "fault_number": 15,
+      "use_case": "1.10 Central: Dispatch order",
+      "location": "Abschnitt 3.6 Tabelle 1 (Communication Protocol)",
+      "description": "Confirm(integer, integer) aus Section 3.4.1 (Central→Taxi) fehlt in Tabelle 1 vollständig; es ist kein Message Type ID zugewiesen. Da die Kommunikation über den Comm_link das Protokoll aus Tabelle 1 verwendet, kann Confirm nicht korrekt kodiert und übertragen werden. Dies betrifft UC 1.5 Task 4 und UC 1.10 Task 4, wo die Zentrale die Auftragsannahme an das Taxi bestätigen muss.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "requirement_reference": ""
+    },
+    {
+      "fault_number": 16,
+      "use_case": "1.11 Central: Send text message",
+      "location": "Abschnitt 3.3.1 und 3.4.1 (Text_Message Signal)",
+      "description": "Text_Message(integer, integer, charstring) verwendet als ersten Parameter entweder eine konkrete Taxi-Nummer (Einzelfahrzeug) oder 0 (alle Fahrzeuge). Gruppen von Fahrzeugen sind nicht adressierbar. Req 3.2.28 fordert Gruppen-Messaging explizit; UC 1.11 Task 3 nennt 'a certain set of cars' als eigenständige Zieloption.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.2.28"
+    },
+    {
+      "fault_number": 17,
+      "use_case": "1.11 Central: Send text message",
+      "location": "Abschnitt 3.4.2 (Signals from Taxi to Central)",
+      "description": "Kein Bestätigungssignal (Acknowledgement) für empfangene Textnachrichten in Section 3.4.2. Req 3.1.35 fordert, dass Fahrzeuge beim Empfang einer Textnachricht automatisch eine Bestätigung senden. Ohne dieses Signal können UC 1.11 Variants 4b und 4c (Ausfall-Benachrichtigungen an Operator) nicht implementiert werden.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.1.35"
+    },
+    {
+      "fault_number": 18,
+      "use_case": "1.11 Central: Send text message",
+      "location": "Abschnitt 3.3.2 (Signals from Central to Operator)",
+      "description": "Kein Signal für Textnachricht-Zustellungsfehler in Section 3.3.2. UC 1.11 Variant 4b fordert explizit, dass der Operator benachrichtigt wird, wenn eine an ein spezifisches Fahrzeug gesendete Nachricht nicht zugestellt werden kann. Das bestehende Confirm-Signal ist semantisch für Bestellungen und nicht für Textnachrichten definiert.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": ""
+    },
+    {
+      "fault_number": 19,
+      "use_case": "1.12 Central: Log in to central system",
+      "location": "Abschnitt 3.3.1 und 3.3.2 (Central-Operator API)",
+      "description": "Die gesamte Central-Operator API enthält keine Authentifizierungssignale für Operatoren. Weder ein Login-Request-Signal (z.B. Credentials) noch Antwort-Signale (LoginOk/LoginFailed) sind in Section 3.3.1 oder 3.3.2 definiert. Req 3.2.3 fordert Authentifizierung per Benutzerkennung und Passwort; Req 3.2.4 fordert Erfolgsmeldung.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "requirement_reference": "3.2.3, 3.2.4"
+    },
+    {
+      "fault_number": 20,
+      "use_case": "1.13 Central: Initiate radio communication",
+      "location": "Abschnitt 3.3.1 (Signals from Operator to Central, Taxi-Signal)",
+      "description": "Taxi(integer, integer, integer) ist in Section 3.3.1 als Signal des Operators zur Zentrale eingeordnet, wird in der Beschreibung aber explizit als 'the response' bezeichnet. Als Antwortsignal der Zentrale muss es in Section 3.3.2 (Central→Operator) eingeordnet sein. Die Fehlplatzierung macht die Schnittstellendefinition widersprüchlich.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "requirement_reference": ""
+    },
+    {
+      "fault_number": 21,
+      "use_case": "1.13 Central: Initiate radio communication",
+      "location": "MSC 4.2 (Voice communication, central initiated), Schritte 11–13 und 17–19",
+      "description": "MSC 4.2 spiegelt Sprachnachrichten an den ursprünglichen Absender zurück: (a) Operator-Stimme: Comm_link sendet Voice_Msg zurück an Central (Schritt 12), Central weiter an Operator (Schritt 13) – der Operator hört seine eigene Stimme. (b) Fahrer-Stimme: Comm_link sendet Voice_Msg zurück an Taxi (Schritt 18) und ein zweites Mal an Central (Schritt 19). In halbduplexer Radio-Kommunikation (Req 3.1.31, 3.2.24) ist kein Echo vorgesehen.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "requirement_reference": "3.1.31, 3.2.24"
+    },
+    {
+      "fault_number": 22,
+      "use_case": "1.13 Central: Initiate radio communication",
+      "location": "Abschnitt 3.6 Tabelle 1 (OverviewSignal, Typ 9)",
+      "description": "OverviewSignal ist in Tabelle 1 mit drei Data-Feldern (x x x) eingetragen. Das Signal Overview(integer, integer, integer) hat bei Übertragung Taxi→Central drei Parameter: Taxi-Nummer (im Protokollrahmen implizit), zentrale Zone (Data1), Anzahl Zonen (Data2). Das ergibt zwei zusätzliche Data-Felder, nicht drei. Ein Data-Feld ist in Tabelle 1 fehlerhaft als verwendet markiert.",
+      "fault_class": "C",
+      "fault_type": "W",
+      "requirement_reference": ""
+    },
+    {
+      "fault_number": 23,
+      "use_case": "1.16 Taxi: View properties",
+      "location": "Abschnitt 3.2.1, 3.4.1 und 3.4.2 (Taxi-User und Taxi-Central API)",
+      "description": "Keinerlei Signale für das Abrufen von Fahrer- oder Fahrzeugeigenschaften in der Taxi-User API oder Taxi-Central API. UC 1.16 Task 2 verlangt explizit, dass die Zentrale die Eigenschaften an das Terminal sendet. Req 3.1.49 fordert Einsichtnahme. Weder ein Request-Signal in 3.2.1/3.4.2 noch ein Response-Signal in 3.4.1/3.2.2 ist definiert.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "requirement_reference": "3.1.49"
+    },
+    {
+      "fault_number": 24,
+      "use_case": "1.18 Central: Update driver properties",
+      "location": "Abschnitt 3.3.1 und 3.3.2 (Central-Operator API)",
+      "description": "Keine Signale für das Aktualisieren von Fahrer- oder Fahrzeugeigenschaften in der Central-Operator API. Req 3.2.35 (Fahrzeugeigenschaften aktualisierbar), Req 3.2.36 (Fahrereigenschaften aktualisierbar), Req 3.2.37 (Bestätigung Fahrzeugeigenschaften), Req 3.2.38 (Bestätigung Fahrereigenschaften) sind alle nicht durch Signale abgedeckt.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "requirement_reference": "3.2.35, 3.2.36, 3.2.37, 3.2.38"
+    }
+  ],
+  "summary": {
+    "total_faults_found": 24,
+    "class_A_found": 10,
+    "class_B_found": 11,
+    "class_C_found": 3,
+    "use_cases_covered": 19
+  }
+}
