@@ -166,9 +166,9 @@ Artefakte zur Durchführung und Dokumentation der Inspektion:
 
 Der **Reviewer-Typ** (LLM vs. Mensch) ist die primäre unabhängige Variable. In Phase 2
 wird zusätzlich der **Eingabeparameter** (Prompt-Konfiguration, Effort-Level des Modells)
-als sekundäre unabhängige Variable variiert. Der Effort-Level umfasst dabei den
-Standard-Modus (Baseline-Runs in Phase 1) sowie höhere Stufen wie Extended Thinking
-(Optimierungsläufe in Phase 2).
+als sekundäre unabhängige Variable variiert. Der Effort-Level umfasst die Stufen
+**low**, **medium**, **high** und **max** (Baseline-Runs in Phase 1 verwenden medium;
+Phase 2 untersucht den Einfluss höherer Stufen).
 
 #### 1.5.2 Abhängige Variablen
 
