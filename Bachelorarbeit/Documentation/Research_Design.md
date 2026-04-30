@@ -125,7 +125,7 @@ Der primäre **Faktor** ist der **Reviewer-Typ**. Die **Treatments** sind:
 
 | Treatment | Beschreibung | Datenbasis |
 |-----------|--------------|------------|
-| **T1: LLM** | LLM führt RB-UBR Inspektion autonom durch | Neue Erhebung (Phase 1: n=10 Runs) |
+| **T1: LLM** | LLM führt RB-UBR Inspektion autonom durch | Neue Erhebung (Phase 1: Runs bis Saturation) |
 | **T2: Mensch** | Menschliche Inspektoren, RB-UBR Gruppe | Petersen et al. (2008), n=10 |
 
 In Petersen et al. (2008) nahmen ursprünglich 23 Studierende teil; nach Ausschluss von
@@ -133,9 +133,9 @@ In Petersen et al. (2008) nahmen ursprünglich 23 Studierende teil; nach Ausschl
 verblieben 19 ausgewertete Probanden. Davon gehörten **10 der RB-UBR-Gruppe** (Kontrollgruppe)
 an, die als Vergleichsbasis für diese Studie dient.
 
-Um einen direkten Vergleich zu ermöglichen, führt das LLM in **Phase 1 ebenfalls 10 Runs**
-mit identischer Konfiguration durch – entsprechend der Stichprobengröße der menschlichen
-Vergleichsgruppe.
+In **Phase 1** führt das LLM Runs mit identischer Konfiguration durch, bis **Saturation** erreicht ist –
+d.h. bis zusätzliche Runs keine neuen Fehler mehr liefern. Die Anzahl der Runs ergibt sich
+damit aus den Daten und nicht aus einer vorab festgelegten Stichprobengröße.
 
 In **Phase 2** wird der **Eingabeparameter** als sekundärer Faktor untersucht (vgl. RQ3):
 Mehrere Runs mit variierenden Konfigurationen (Detailgrad der Instruktionen, bereitgestellte
@@ -147,9 +147,9 @@ Inspektionsleistung des LLMs zu optimieren.
 Folgende Instrumente werden eingesetzt. Diese sind keine Variablen, sondern Werkzeuge und
 Artefakte zur Durchführung und Dokumentation der Inspektion:
 
-- **Inspektionsartefakte (Experimentalpaket):** `TextReqSpec_v3.6.md`,
-  `Taxi_des_exp_v2.md`, `UseCasesRank_v3.4.md`, `Inspection Record Empty.json`
-  – alle Bestandteile des originalen Experimentalpakets von Petersen et al. (2008)
+- **Inspektionsartefakte (Experimentalpaket):** `UseCasesRank_v3.4.md` (Inspektionstreiber),
+  `Taxi_des_exp_v2.md` (Inspektionsobjekt), `TextReqSpec_v3.6.md` (Hintergrundlektüre),
+  `Inspection Record Empty.json` – alle Bestandteile des originalen Experimentalpakets von Petersen et al. (2008)
 - **Inspektionsplan:** `Inspektionsplan.md` – vom Autor dieser Studie erstellt, basierend
   auf dem RB-UBR-Prozess aus Petersen et al. (2008); kein Bestandteil des originalen
   Experimentalpakets
@@ -193,7 +193,7 @@ Zur Sicherstellung der Vergleichbarkeit werden folgende Variablen konstant gehal
   Anforderungsdokument, Design-Dokument, Use-Case-Dokument, Inspection Record Form
 - Fehlerklassifikation und Gesamtanzahl (38 Fehler: 13A, 14B, 11C)
 - Inspektionsreihenfolge (Use Cases in priorisierter Reihenfolge, RB-UBR)
-- Fehlerdefinition (Inkonsistenz zwischen Anforderungen und Design gilt als Fehler)
+- Fehlerdefinition (Inkonsistenz zwischen Use Cases und Design gilt als Fehler)
 
 *Nicht identisch mit Petersen et al. (2008):* Der Inspektionsplan wurde vom Autor neu
 erstellt und ist kein Bestandteil des originalen Experimentalpakets.
@@ -204,8 +204,8 @@ erstellt und ist kein Bestandteil des originalen Experimentalpakets.
 
 #### Phase 1: LLM-Replikation (RQ1–RQ2)
 
-Das LLM führt 10 Runs mit identischer Konfiguration durch (entsprechend n=10 der
-menschlichen RB-UBR-Gruppe). Jeder Run folgt diesem Protokoll:
+Das LLM führt Runs mit identischer Konfiguration durch, bis Saturation erreicht ist
+(d.h. keine neuen Fehler mehr gefunden werden). Jeder Run folgt diesem Protokoll:
 
 1. Das LLM erhält die Inspektionsdokumente aus dem `Input/`-Ordner sowie den Inspektionsplan
 2. Es erhält **keinen** Zugriff auf `Inspection Record Original.json`

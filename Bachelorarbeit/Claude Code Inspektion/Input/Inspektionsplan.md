@@ -8,20 +8,20 @@ April 2026
 ## 1 Ziel der Inspektion
 
 Ziel ist die systematische Identifikation von Fehlern im Software Top Level Design Document
-durch den Vergleich mit den textuellen Anforderungen und den priorisierten Use Cases.
+anhand der priorisierten Use Cases.
 
-Die Anforderungen gelten als korrekt. Inkonsistenzen zwischen Anforderungen bzw. Use Cases
+Die Use Cases sind der alleinige Treiber der Inspektion. Inkonsistenzen zwischen Use Cases
 und dem Design-Dokument werden als Fehler im Design interpretiert.
 
 ---
 
 ## 2 Inspektionsartefakte
 
-| Dokument | Datei |
-|----------|-------|
-| Textual Requirements Specification | `TextReqSpec_v3.6.md` |
-| Software Top Level Design Document | `Taxi_des_exp_v2.md` |
-| Use Cases (rank-based) | `UseCasesRank_v3.4.md` |
+| Dokument | Datei | Rolle |
+|----------|-------|-------|
+| Use Cases (rank-based) | `UseCasesRank_v3.4.md` | Inspektionstreiber |
+| Software Top Level Design Document | `Taxi_des_exp_v2.md` | Inspektionsobjekt |
+| Textual Requirements Specification | `TextReqSpec_v3.6.md` | Hintergrundlektüre |
 
 ---
 
@@ -33,7 +33,7 @@ Führungsinstrument genutzt, um das Design-Dokument systematisch auf Fehler zu p
 
 ### Phase 1 – Dokumente lesen
 
-Lies alle drei Artefakte vollständig, um ein Systemverständnis aufzubauen:
+Lies Use Cases und Design-Dokument vollständig, um ein Systemverständnis aufzubauen:
 
 - Systemzweck und Komponenten des Taxi-Managementsystems
 - Kommunikation der Komponenten über Signale
@@ -54,7 +54,6 @@ die folgenden Schritte durch:
    - Ist sie korrekt modelliert? (Wrong fault)
    - Sind Signalflüsse, Parameter und Zustandsübergänge korrekt?
    - Sind Alternativfälle (Variants) im Design berücksichtigt?
-   - Bestehen Inkonsistenzen zwischen Anforderungen, Use Case und Design?
 4. Dokumentiere jeden gefundenen Fehler im Inspection Record
 5. Fahre mit dem Use Case der nächsthöheren Priorität fort
 
@@ -99,4 +98,4 @@ Jeder Eintrag enthält:
 | `fault_class` | A, B oder C |
 | `fault_type` | M (Missing) oder W (Wrong) |
 | `description` | Kurze Beschreibung des Fehlers |
-| `requirement_reference` | Referenz zur Anforderung (falls zutreffend) |
+| `use_case_reference` | UC-Nummer und Task, über den der Fehler gefunden wurde |
