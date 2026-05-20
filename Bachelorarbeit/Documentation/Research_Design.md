@@ -153,8 +153,10 @@ Artefakte zur Durchführung und Dokumentation der Inspektion:
 - **Inspektionsplan:** `Inspektionsplan.md` – vom Autor dieser Studie erstellt, basierend
   auf dem RB-UBR-Prozess aus Petersen et al. (2008); kein Bestandteil des originalen
   Experimentalpakets
-- **Inspection Agent Prompt:** `Inspection_Agent_Prompt.md` – Prompt-Instruktionen für den
-  LLM-Inspektor; vom Autor erstellt; kein Bestandteil des originalen Experimentalpakets
+- **Inspection Agent Prompts:**
+  - `Inspection_Agent_Prompt.md` (`baseline_v1`) – Phase-1-Prompt; einpassige UC-Inspektion
+  - `Inspection_Agent_Prompt_v2.md` (`improved_v1`) – Phase-2-Prompt; dreipassige Inspektion
+    (UC-Vorwärtsscan, Design-Rückwärtsscan, MSC-Konsistenzprüfung); vom Autor erstellt
 - **Referenzdaten (Mensch):** `Inspection Record Original.json` – menschliche
   Inspektionsergebnisse aus Petersen et al. (2008); dem LLM nicht zugänglich
 
@@ -219,12 +221,22 @@ Jeder Run wird durch folgenden standardisierten Trigger-Prompt gestartet (wobei 
 Lies `Claude Code Inspektion/Input/Inspection_Agent_Prompt.md` und befolge die Anweisungen exakt. Dies ist Run_XX.
 ```
 
+Ergebnisse werden gespeichert unter `Results/Ohne Parametervariation/Run_XX/Run_XX_Inspection_Record.json`.
+
 #### Phase 2: Parametervariation (RQ3)
 
-Mehrere zusätzliche Runs mit variierenden Eingabeparametern werden durchgeführt
-(z.B. mit/ohne Fehlerklassendefinition, unterschiedlichem Detailgrad des Inspektionsplans,
-variierender Anzahl bereitgestellter Eingabedokumente, höherem Effort-Level). Ziel ist die
-Identifikation von Konfigurationen, die die Inspektionsleistung des LLMs verbessern.
+Runs mit dem verbesserten Prompt `Inspection_Agent_Prompt_v2.md` (`prompt_config: improved_v1`).
+Der v2-Prompt ersetzt den einpassigen UC-Scan durch eine **dreipassige Inspektion**:
+Pass 1 (UC-Vorwärtsscan), Pass 2 (Design-Rückwärtsscan je API-Sektion), Pass 3 (MSC-Konsistenzprüfung).
+Ziel ist die Identifikation, ob strukturiertere Analyseschritte die Fehlerabdeckung gegenüber `baseline_v1` erhöhen.
+
+Trigger-Prompt Phase 2:
+
+```
+Lies `Claude Code Inspektion/Input/Inspection_Agent_Prompt_v2.md` und befolge die Anweisungen exakt. Dies ist Run_XX.
+```
+
+Ergebnisse werden gespeichert unter `Results/Mit Parametervariation/Run_XX/Run_XX_Inspection_Record.json`.
 
 #### Menschliche Basisdaten (aus Petersen et al. 2008)
 
@@ -302,8 +314,9 @@ Analog zu Petersen et al. (2008):
 
 Das Research Design ist vollständig reproduzierbar. Alle Eingabedokumente, der Inspektionsplan,
 die Inspection-Record-Vorlage sowie die Prompt-Konfigurationen sind versioniert im Repository
-`Sildex/bachelor-thesis-ai-inspection` hinterlegt. Jeder Inspektionsdurchlauf wird als
-separater Run mit eindeutiger Nummer gespeichert (`Results/Run_XX_Inspection_Record.json`).
+`Sildex/bachelor-thesis-ai-inspection` hinterlegt. Jeder Inspektionsdurchlauf wird als separater Run mit eindeutiger Nummer gespeichert –
+Phase-1-Runs unter `Results/Ohne Parametervariation/Run_XX/`,
+Phase-2-Runs unter `Results/Mit Parametervariation/Run_XX/`.
 Die menschlichen Referenzdaten sind im Repository enthalten, jedoch vom LLM-Zugriff isoliert
 (`Human_Reference_NOT_FOR_AI/`).
 

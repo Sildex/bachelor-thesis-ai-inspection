@@ -1,0 +1,277 @@
+{
+  "run_id": "Run_04",
+  "model": "claude-sonnet-4-6",
+  "prompt_config": "improved_v1",
+  "effort_level": "medium",
+  "timestamp": "2026-05-08T00:00:00Z",
+  "faults": [
+    {
+      "fault_number": 1,
+      "use_case": "UC 1.1 – Taxi: Submit order",
+      "location": "Section 3.4.1 – Signals from Central to Taxi",
+      "description": "No signal in 3.4.1 to notify the taxi that its submitted order was rejected (e.g. no available cars). Variant 4b requires the central to reject the order and prompt a new submission, but no rejection signal exists for the Central→Taxi direction.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.1 Variant 4b"
+    },
+    {
+      "fault_number": 2,
+      "use_case": "UC 1.2 – Central: Submit order",
+      "location": "Section 3.1 – Order_struct",
+      "description": "Order_struct has no Priority field. UC 1.2 Task 2 explicitly states that orders can be prioritized (some customers are more important than others), but no priority attribute is defined in the data structure.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.2 Task 2"
+    },
+    {
+      "fault_number": 3,
+      "use_case": "UC 1.2 – Central: Submit order",
+      "location": "Section 3.3.2 – Signals from Central to Operator",
+      "description": "No signal in 3.3.2 conveys an estimated wait time to the operator. Variant 3b requires the system to present an estimate of how long it takes for a car to be available when an order is very close in time.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.2 Variant 3b"
+    },
+    {
+      "fault_number": 4,
+      "use_case": "UC 1.4 – Taxi: Log in",
+      "location": "Section 3.2.1 – Signals from User to Taxi module",
+      "description": "LoginSignal is defined with no parameters. UC 1.4 Task 2–3 requires that driver identification (from the swiped card) and position information be sent to the central upon login; without parameters, neither can be conveyed.",
+      "fault_class": "A",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.4 Task 2, Task 3"
+    },
+    {
+      "fault_number": 5,
+      "use_case": "UC 1.4 – Taxi: Log in",
+      "location": "Section 3.4.2 – Signals from Taxi to Central",
+      "description": "LoggedIn(integer) carries only the taxi number. UC 1.4 Task 3 requires that driver information be sent to the central together with the position at login, but no driver identification parameter is included in the signal.",
+      "fault_class": "A",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.4 Task 3"
+    },
+    {
+      "fault_number": 6,
+      "use_case": "UC 1.4 – Taxi: Log in",
+      "location": "Section 3.4.1 – Signals from Central to Taxi",
+      "description": "No LoginFailed signal is defined in 3.4.1. Variant 4b requires the central to reject an invalid driver card and keep the car in Offline state; without a Central→Taxi rejection signal, the taxi cannot be notified of failed authentication.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.4 Variant 4b"
+    },
+    {
+      "fault_number": 7,
+      "use_case": "UC 1.4 – Taxi: Log in",
+      "location": "Section 3.4.1 – Signals from Central to Taxi",
+      "description": "No ZoneInfo signal is defined in 3.4.1 (Central→Taxi). UC 1.4 Task 6 requires the central to start sending overview information on all zones to the car after successful login; ZoneInfo exists only in 3.3.2 (Central→Operator) and 3.2.2 (Taxi→Driver), not in the Central→Taxi interface.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.4 Task 6"
+    },
+    {
+      "fault_number": 8,
+      "use_case": "UC 1.6 – Taxi: Driving a customer",
+      "location": "Section 3.4.2 – Signals from Taxi to Central",
+      "description": "Position(integer, integer) carries only taxi number and zone number. UC 1.6 Task 8 requires the driver to send both the arrival zone AND the estimated arrival time to the central; there is no time parameter in the signal.",
+      "fault_class": "A",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.6 Task 8"
+    },
+    {
+      "fault_number": 9,
+      "use_case": "UC 1.7 – Central: Handle incoming alarms",
+      "location": "Section 3.4.2 – Signals from Taxi to Central",
+      "description": "No alarm activation signal is defined in 3.4.2. UC 1.7 Task 1 and UC 1.8 Task 1–2 require the taxi to immediately notify the central when the driver triggers the alarm button; no dedicated alarm signal exists in the Taxi→Central interface.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.7 Task 1; UC 1.8 Task 1"
+    },
+    {
+      "fault_number": 10,
+      "use_case": "UC 1.8 – Taxi: Alarm event",
+      "location": "Section 3.2.1 – Signals from User to Taxi module",
+      "description": "No alarm activation signal is defined in 3.2.1. UC 1.8 Task 1 requires the driver to trigger the alarm; only Reset_Alarm exists in 3.2.1, which is a reset action, not an activation.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.8 Task 1"
+    },
+    {
+      "fault_number": 11,
+      "use_case": "UC 1.8 – Taxi: Alarm event",
+      "location": "Section 3.4.2 – Signals from Taxi to Central",
+      "description": "Position(integer, integer) sends only zone number during normal operation. UC 1.8 Task 3 explicitly requires the taxi to send exact coordinates to the central every 30 seconds while the alarm is active; a zone number does not satisfy this requirement.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.8 Task 3"
+    },
+    {
+      "fault_number": 12,
+      "use_case": "UC 1.8 – Taxi: Alarm event",
+      "location": "Section 3.2.1 – Signals from User to Taxi module",
+      "description": "Reset_Alarm(integer) is defined in 3.2.1, allowing the driver to send an alarm reset. UC 1.8 Task 4 states the alarm can only be reset by the operator, not the driver; this signal enables a driver-side reset that contradicts the use case.",
+      "fault_class": "B",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.8 Task 4"
+    },
+    {
+      "fault_number": 13,
+      "use_case": "UC 1.9 – Taxi: View traffic overview",
+      "location": "Section 3.4.1 – Signals from Central to Taxi",
+      "description": "No ZoneInfo (or equivalent overview) signal is defined in 3.4.1. UC 1.9 Task 2 requires overview information to be sent from the central to the taxi terminal; this signal path is missing in the Central→Taxi API (same structural gap as noted for UC 1.4 Task 6).",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.9 Task 2"
+    },
+    {
+      "fault_number": 14,
+      "use_case": "UC 1.11 – Central: Send text message",
+      "location": "Section 3.4.2 – Signals from Taxi to Central",
+      "description": "No text message acknowledgment signal is defined in 3.4.2. UC 1.11 Task 4 requires each receiving car to automatically acknowledge text message reception to the central; the existing Ack(integer, integer) signal is for order acceptance, not text messages.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.11 Task 4"
+    },
+    {
+      "fault_number": 15,
+      "use_case": "UC 1.11 – Central: Send text message",
+      "location": "Section 3.3.2 – Signals from Central to Operator",
+      "description": "No text message delivery confirmation signal is defined in 3.3.2. UC 1.11 Task 5 and variants 4b/4c require the system to confirm delivery (or non-delivery) of text messages back to the operator; no such signal exists in the Central→Operator interface.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.11 Task 5, Variants 4b and 4c"
+    },
+    {
+      "fault_number": 16,
+      "use_case": "UC 1.12 – Central: Log in to central system",
+      "location": "Section 3.3.1 – Signals from Operator to Central",
+      "description": "No operator login signal (carrying user identification and password) is defined in 3.3.1. UC 1.12 Task 1–2 requires operators to submit credentials to the system for verification, but no such signal exists in the Operator→Central interface.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.12 Task 1"
+    },
+    {
+      "fault_number": 17,
+      "use_case": "UC 1.12 – Central: Log in to central system",
+      "location": "Section 3.3.2 – Signals from Central to Operator",
+      "description": "No operator login confirmation (success or failure) signal is defined in 3.3.2. UC 1.12 Tasks 2–3 and variant 2b require the system to notify the operator of login success or failure, but no such signal exists.",
+      "fault_class": "B",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.12 Task 3, Variant 2b"
+    },
+    {
+      "fault_number": 18,
+      "use_case": "UC 1.13 – Central: Initiate radio communication",
+      "location": "Section 3.3.1 – Signals from Operator to Central",
+      "description": "Taxi(integer, integer, integer) is defined in 3.3.1 as a signal from operator to central, but its description reads 'this is the response' — it is a Central→Operator response signal incorrectly placed in the Operator→Central section.",
+      "fault_class": "C",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.13 Task 2"
+    },
+    {
+      "fault_number": 19,
+      "use_case": "UC 1.16 – Taxi: View properties",
+      "location": "Section 3.2.1 – Signals from User to Taxi module",
+      "description": "No signal is defined in 3.2.1 for the driver to request car or driver properties. UC 1.16 Task 1 requires the driver to initiate the property view on the terminal, but no corresponding request signal exists in the User→Taxi interface.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.16 Task 1"
+    },
+    {
+      "fault_number": 20,
+      "use_case": "UC 1.16 – Taxi: View properties",
+      "location": "Section 3.4.1 – Signals from Central to Taxi; Section 3.2.2 – Signals from Taxi to Driver",
+      "description": "No signal for sending car or driver properties to the taxi is defined in 3.4.1 or 3.2.2. UC 1.16 Task 2 requires the central to send this information to the car terminal, but the entire Central→Taxi→Driver properties delivery path is missing.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.16 Task 2"
+    },
+    {
+      "fault_number": 21,
+      "use_case": "UC 1.17 – Central: Incoming radio communication",
+      "location": "Section 3.3.1 – Signals from Operator to Central",
+      "description": "No signal for an operator to accept (take) an incoming voice call from a taxi is defined in 3.3.1. UC 1.17 Task 1 requires a free operator to take the incoming communication request, but only outbound Start_Voice and Terminate_Voice exist for voice in the Operator→Central direction.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.17 Task 1"
+    },
+    {
+      "fault_number": 22,
+      "use_case": "UC 1.18 – Central: Update driver properties",
+      "location": "Section 3.3.1 – Signals from Operator to Central",
+      "description": "No signal for updating driver properties is defined in 3.3.1. UC 1.18 Task 3 requires the operator to submit updated driver properties to the system, but no such signal exists in the Operator→Central interface.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.18 Task 3"
+    },
+    {
+      "fault_number": 23,
+      "use_case": "UC 1.18 – Central: Update driver properties",
+      "location": "Section 3.3.2 – Signals from Central to Operator",
+      "description": "No acknowledgment signal for driver property updates is defined in 3.3.2. UC 1.18 Task 4 requires the system to acknowledge property changes to the operator, but no corresponding signal exists in the Central→Operator interface.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.18 Task 4"
+    },
+    {
+      "fault_number": 24,
+      "use_case": "UC 1.19 – Taxi: Receive text message",
+      "location": "Section 3.2.1 – Signals from User to Taxi module",
+      "description": "No signal is defined in 3.2.1 for the driver to acknowledge reading a text message. UC 1.19 Task 3 requires the message to be marked as read when the driver presses the button to read it, but no corresponding User→Taxi signal exists.",
+      "fault_class": "C",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.19 Task 2, Task 3"
+    },
+    {
+      "fault_number": 25,
+      "use_case": "UC 1.2 – Central: Submit order",
+      "location": "Section 4.1 – MSC Order, Step 1",
+      "description": "MSC 4.1 Step 1 uses signal name Order(New_Order) for the Operator→Central direction, but the signal defined in 3.3.1 for this direction is OrderOper(Order_struct, integer). The MSC references a non-existent signal name.",
+      "fault_class": "A",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.2 Task 2; UC 1.10 Task 2"
+    },
+    {
+      "fault_number": 26,
+      "use_case": "UC 1.5 – Taxi: Receive order",
+      "location": "Section 4.1 – MSC Order, after Step 8",
+      "description": "MSC 4.1 shows no Confirm signal from Central→Taxi after the Ack is received (after Step 8). UC 1.5 Task 4 and UC 1.10 Task 4 require the central to confirm the order acceptance back to the taxi; this step is absent from the MSC.",
+      "fault_class": "A",
+      "fault_type": "M",
+      "use_case_reference": "UC 1.5 Task 4"
+    },
+    {
+      "fault_number": 27,
+      "use_case": "UC 1.13 – Central: Initiate radio communication",
+      "location": "Section 4.2 – MSC Voice, Steps 2–3",
+      "description": "MSC 4.2 Steps 2–3 pass Start_Voice(Operator_Nbr, Taxi_Nbr) from Central→Comm_link→Taxi, but 3.4.1 defines the Central→Taxi Start_Voice parameters as (taxi_number, operator_number). The parameter order in the MSC is inverted relative to the signal definition.",
+      "fault_class": "C",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.13 Task 4; UC 1.15 Task 1"
+    },
+    {
+      "fault_number": 28,
+      "use_case": "UC 1.15 – Taxi: Incoming radio communication",
+      "location": "Section 4.2 – MSC Voice, Step 5",
+      "description": "MSC 4.2 Step 5 shows Driver→Taxi: Confirm_Voice(Taxi_Nbr), but no Confirm_Voice signal is defined in 3.2.1 (Signals from User to Taxi module). The signal Confirm_Voice exists in 3.2.2 (sent to the driver), not from the driver.",
+      "fault_class": "C",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.15 Task 2"
+    },
+    {
+      "fault_number": 29,
+      "use_case": "UC 1.14 – Taxi: Initiate radio communication",
+      "location": "Section 4.2 – MSC Voice, Step 15",
+      "description": "MSC 4.2 Step 15 shows Driver→Taxi: Start_Voice(Taxi_Nbr) after the voice channel is already established (post-Confirm_Voice at Step 5–8). At this point the driver should use Send_Voice(Taxi_Nbr) per 3.2.1 to transmit speech; Start_Voice is an initiation signal and is incorrect here.",
+      "fault_class": "C",
+      "fault_type": "W",
+      "use_case_reference": "UC 1.14 Task 3"
+    }
+  ],
+  "summary": {
+    "total_faults_found": 29,
+    "class_A_found": 9,
+    "class_B_found": 9,
+    "class_C_found": 11,
+    "use_cases_covered": 19
+  }
+}
